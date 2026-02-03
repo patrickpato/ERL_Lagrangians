@@ -1,0 +1,162 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{times}
+
+\doublespacing
+
+\begin{document}
+
+\section{Introduction}
+
+The foreign exchange (FX) market is the largest and most liquid financial market, with daily turnover measured in the trillions of US dollars and continuous trading across global time zones (Bank for International Settlements, 2022). This market underpins international trade, portfolio allocation, and corporate risk management, which makes even small improvements in forecasting and execution economically consequential. At the same time, FX prices aggregate a vast number of heterogeneous beliefs about macroeconomic fundamentals, monetary policy, liquidity conditions, and geopolitical risk. These forces arrive at different frequencies, interact nonlinearly, and can shift regimes without warning. As a result, the FX market is simultaneously rich in information and exceptionally noisy, creating a persistent tension between the promise of systematic trading and the challenge of robust generalization.
+
+Early research framed FX rates through the lens of market efficiency, in which prices reflect available information and follow a random walk (Fama, 1970; Malkiel, 1973). Seminal empirical results showed that structural exchange rate models struggled to beat a naive random walk in out-of-sample forecasts (Meese \& Rogoff, 1983). These findings motivated the view that any apparent predictability might be illusory or short lived. However, evidence of short-horizon autocorrelations and structural regularities suggested the possibility of statistical signals in specific market segments or regimes (Lo \& MacKinlay, 1988). The ongoing debate about predictability led researchers to refine econometric tools, expand data sources, and evaluate models with more rigorous out-of-sample protocols.
+
+\subsection{Statistical approaches to FX trading}
+
+Statistical approaches to FX trading are rooted in econometric modeling and time series analysis, where forecasts of returns or volatility are derived from structured parametric assumptions. Traditional autoregressive models, moving average components, and vector autoregressions provide baseline structures for exchange rate dynamics, while cointegration methods capture long-run equilibrium relationships among macroeconomic variables and exchange rates (Johansen, 1991; Taylor, 2005). These models are attractive because they are interpretable and allow explicit hypothesis testing. They also align with the macro-finance tradition, which connects FX movements to inflation differentials, interest rates, and monetary policy regimes. In applied trading contexts, these models frequently serve as signal generators or as inputs into risk models rather than as stand-alone trading strategies.
+
+Volatility modeling has been particularly influential in FX, where the clustering of volatility and heavy-tailed returns violate Gaussian assumptions (Cont, 2001). Autoregressive conditional heteroskedasticity and its extensions allow the variance of returns to evolve over time, creating conditional risk forecasts that are essential for position sizing and risk management (Engle, 1982; Bollerslev, 1986). Empirical studies show that volatility forecasts from GARCH-type models can improve risk-adjusted performance when combined with execution rules and leverage constraints. Nonetheless, these models often rely on linear dynamics or specific functional forms for volatility persistence, which can be brittle in the presence of regime shifts and abrupt changes in macroeconomic policy.
+
+Beyond volatility, statistical models have also been used to formalize carry, value, and momentum signals at the portfolio level. For example, return predictability based on interest rate differentials motivates carry strategies, while deviations from purchasing power parity motivate value signals. These signals are often estimated using rolling regressions or state-space models, and then translated into linear trading rules. While these approaches are intuitive and interpretable, their performance depends heavily on stable relationships between macro variables and exchange rates, which has been difficult to maintain across monetary regimes. As a result, even carefully specified statistical factors often require regime-specific calibration and extensive risk overlays, which limits their scalability and robustness (Taylor, 2005).
+
+Regime-switching and structural models attempt to capture the episodic nature of exchange rates. For example, Markov-switching models describe FX dynamics as transitions between latent states such as trend-following and mean-reverting regimes (Hamilton, 1989). The evidence of ``long swings'' in major currency pairs further motivated regime-based frameworks in which exchange rates move through prolonged periods of appreciation or depreciation that are only partially explained by fundamentals (Engel \& Hamilton, 1990). While these models can improve interpretability and align with narrative accounts of policy cycles, their predictive accuracy tends to be sensitive to the assumed number of regimes and the stability of transition probabilities.
+
+Microstructure models broaden the statistical toolkit by incorporating order flow and liquidity. High-frequency data show that order flow conveys information about heterogeneous expectations and can explain short-run exchange rate movements (Evans \& Lyons, 2002). The high-frequency finance literature documents scaling laws, intraday seasonality, and clustering effects that are not well captured by low-frequency macro models (Dacorogna et al., 2001). These insights have influenced trading strategies that exploit microstructure signals, such as order imbalance or short-term momentum. However, microstructure models can be data-intensive, and their performance often degrades when liquidity conditions change or when market participants adapt to observed patterns.
+
+To mitigate model risk, practitioners frequently combine forecasts from multiple statistical models, using weighted averages or dynamic model averaging. Such ensemble methods can reduce variance and hedge against model mis-specification, but in FX they still encounter periods where all models fail simultaneously during crisis regimes. Furthermore, statistical ensembles typically optimize predictive accuracy rather than trading utility, and they can amplify turnover when models disagree. These issues underscore that the statistical paradigm, while foundational, struggles to integrate prediction, execution, and risk control into a unified learning objective.
+
+Technical analysis, while sometimes viewed as distinct from statistical modeling, is often implemented as a set of deterministic statistical filters such as moving averages, breakouts, or oscillator thresholds. Empirical studies in FX show mixed evidence for the profitability of technical rules, with some periods showing modest gains and others showing rapid decay once transaction costs are applied (LeBaron, 1999; Neely et al., 1997). Surveys of the technical analysis literature emphasize the risk of data snooping and the importance of controlling for multiple hypothesis testing (Park \& Irwin, 2007; Sullivan et al., 1999). Formal tools for forecast comparison, such as the Diebold-Mariano test, provide a structured way to benchmark models, but they cannot correct for the fundamental challenge that model rankings are often unstable across regimes (Diebold \& Mariano, 1995).
+
+Despite their rigor and interpretability, statistical approaches face persistent gaps that limit their trading utility. First, parametric assumptions such as linearity, normality, and stationarity are routinely violated in FX markets (Cont, 2001). Second, many statistical models are designed to minimize prediction error rather than maximize trading performance, which creates a disconnect between model fit and realized returns. Third, even when modest predictability exists, it can be fragile and sensitive to sample selection, transaction costs, and execution frictions. These limitations motivate the search for more flexible models that can learn nonlinear relationships, integrate high-dimensional features, and adapt more quickly to structural change. This gap sets the stage for machine learning (ML) methods, which promise greater representational capacity and data-driven adaptability.
+
+\subsection{Machine learning approaches to FX trading}
+
+Machine learning offers a different paradigm by focusing on predictive performance and flexible function approximation rather than explicit parametric structure. Supervised learning models such as support vector machines, decision trees, and neural networks can capture nonlinear relationships between inputs and outputs, while avoiding strong assumptions about data-generating processes (Vapnik, 1995; Bishop, 2006; Hastie et al., 2009). In FX trading, these models have been applied to tasks such as directional forecasting, volatility prediction, and signal extraction from technical indicators or macroeconomic variables. The appeal lies in their ability to incorporate diverse inputs, including price histories, derived indicators, macro releases, and alternative data.
+
+Early ML studies in FX explored neural networks and evolutionary algorithms for directional forecasting and trading rule discovery. Genetic programming methods demonstrated that adaptive rule discovery could produce signals with statistical significance in certain samples, although performance was highly sensitive to the evaluation period (Neely et al., 1997). Survey evidence highlights that ML and soft computing methods can outperform linear baselines in specific settings, yet the gains often diminish after accounting for costs and realistic execution (Park \& Irwin, 2007). These findings suggest that ML can extract patterns that are not captured by classical econometrics, but that the economic value of these patterns depends on robust evaluation and careful integration with trading constraints.
+
+Feature engineering plays a central role in ML for FX. Common inputs include technical indicators, momentum measures, carry and value signals, macro surprises, and microstructure proxies such as order flow (Evans \& Lyons, 2002). The flexibility of ML enables the integration of multiple signal classes that would be cumbersome in a purely statistical model. However, this flexibility introduces risks of multicollinearity, data leakage, and implicit look-ahead bias. As a result, practitioners often deploy strict data pipelines, robust cross-validation protocols, and rolling-window retraining to maintain out-of-sample validity.
+
+Deep learning has accelerated interest in ML for finance by enabling the extraction of hierarchical features from raw sequences. Recurrent neural networks and long short-term memory architectures have been used to model temporal dependencies in asset returns, often showing improved predictive performance in equity or index contexts (Fischer \& Krauss, 2018). In high-frequency settings, deep networks have been shown to capture universal microstructure patterns across assets and time, which suggests potential for transfer learning across FX pairs (Sirignano \& Cont, 2019). Broader asset pricing studies indicate that ML can exploit nonlinearities and interactions among predictors that traditional linear models miss (Gu et al., 2020). These advances encourage the application of deep learning to FX, where complex dynamics and large datasets appear to fit ML strengths.
+
+However, the reliance of deep learning on large, stable datasets introduces new vulnerabilities in FX. Historical regimes are limited and market microstructure evolves with technology and regulation, so the distribution shift problem is acute. Transfer learning and cross-asset training can increase effective sample size, yet their effectiveness depends on the stability of cross-asset structure and the similarity of liquidity conditions (Sirignano \& Cont, 2019). This tension means that many deep FX models must trade off sophistication against data scarcity, and in practice they often revert to simpler architectures with strong regularization and conservative deployment.
+
+Nevertheless, ML approaches face well-documented challenges in financial prediction. The nonstationarity of FX returns implies that patterns extracted in one regime can disappear or reverse, leading to abrupt performance degradation. Data snooping and multiple testing remain critical issues, as the search over model architectures and features can inadvertently select a model that overfits historical noise (Sullivan et al., 1999; White, 2000). The ML literature itself recognizes that high-capacity models can achieve impressive in-sample accuracy while generalizing poorly when the data distribution shifts (Goodfellow et al., 2016). This is particularly relevant in FX, where structural breaks, policy shifts, and liquidity cycles are common.
+
+Another practical limitation concerns interpretability and governance. Many institutional trading desks require models to provide explanations for risk exposure and to comply with model risk management frameworks. Complex ML models can be difficult to audit and stress test, which can limit their adoption despite superior predictive performance. Moreover, in highly levered markets such as FX, small errors in model calibration can lead to large losses, making robust uncertainty estimation and scenario analysis as important as average predictive accuracy (Goodfellow et al., 2016).
+
+An additional limitation is the objective mismatch between ML training and trading deployment. Standard supervised learning focuses on minimizing prediction error, often with symmetric loss functions, while trading rewards are asymmetric and depend on position sizing, costs, and risk exposure. A classifier that predicts direction accurately may still generate losses if confidence is miscalibrated, turnover is excessive, or transaction costs dominate. Moreover, ML models typically make point predictions, leaving the decision of how to translate predictions into trades to a separate layer of heuristic rules. This separation can lead to suboptimal performance because the predictive model is not optimized for the downstream trading objective. These gaps motivate a paradigm that directly integrates prediction with sequential decision making, which is the core promise of reinforcement learning (RL).
+
+\subsection{Reinforcement learning approaches to FX trading}
+
+Reinforcement learning frames trading as a sequential decision problem in which an agent selects actions to maximize cumulative reward in an environment modeled as a Markov Decision Process (Sutton \& Barto, 2018). This formulation aligns naturally with trading, where actions correspond to position sizes or orders, states summarize market information, and rewards represent risk-adjusted returns. RL also permits the direct inclusion of transaction costs, risk penalties, and capital constraints in the reward function, enabling end-to-end optimization of trading behavior rather than separate forecasting and execution stages.
+
+Early RL applications to trading demonstrated the feasibility of learning policies directly from market data. Moody and Saffell (2001) proposed direct reinforcement learning to optimize trading performance under transaction costs, showing that policy gradient methods could discover profitable strategies in controlled settings. Subsequent work expanded these ideas to include function approximation and more complex state representations, paving the way for deep RL in finance. These studies reinforced the appeal of RL as a method that can learn to balance return and risk through experience rather than through explicit rule design.
+
+The success of deep RL in simulated domains has led to an expanding body of trading research that adapts algorithms such as DQN, DDPG, TRPO, and PPO (Mnih et al., 2015; Lillicrap et al., 2015; Schulman et al., 2015; Schulman et al., 2017). Portfolio management settings have used deep RL to learn dynamic allocation policies under realistic constraints and transaction costs (Deng et al., 2016; Jiang et al., 2017). These algorithms are attractive because they can handle continuous action spaces, learn from high-dimensional inputs, and optimize long-horizon objectives. In FX trading, continuous control is especially relevant because position sizes and leverage ratios are naturally continuous rather than discrete.
+
+Despite these advantages, RL faces distinct market difficulties. Unlike benchmark environments where dynamics are stationary and reward signals are well behaved, FX prices are inherently dynamic and strongly influenced by regime changes, policy interventions, and rare events. Returns are characterized by heavy tails and volatility clustering, and the signal-to-noise ratio is exceptionally low (Cont, 2001). Observations are partial and noisy, while the true market state remains unobserved, creating a partially observable environment where the Markov assumption is at best approximate. These properties complicate credit assignment and can lead to policy instability or overfitting to recent regimes.
+
+Practical trading agents must also operate under strict operational constraints. Transaction costs, market impact, leverage limits, and drawdown restrictions fundamentally shape viable strategies, yet many RL formulations treat these as afterthoughts or apply them through ad hoc penalty terms (Almgren \& Chriss, 2001). Without explicit constraint handling, agents may overtrade, exploit unrealistic leverage, or chase volatile signals that cannot be implemented in practice. The need to integrate constraints systematically has motivated research in safe RL and constrained optimization, including Constrained Markov Decision Processes (CMDPs) and Lagrangian methods that enforce expected constraint satisfaction (Altman, 1999; Garcia \& Fernandez, 2015; Achiam et al., 2017; Tessler et al., 2019).
+
+Risk-sensitive extensions to RL attempt to incorporate metrics such as drawdown, Value at Risk, or conditional Value at Risk into the reward or constraint structure. While these measures align with asset management practice, they introduce non-linearities and time inconsistency that complicate policy optimization. Empirically, agents optimized for risk metrics can become overly conservative or exploit artifacts in historical data, indicating that risk sensitivity alone does not resolve the fundamental exploration and stability challenges (Garcia \& Fernandez, 2015).
+
+However, translating CMDP theory into deep RL for FX markets is not straightforward. Lagrangian methods rely on stable dual variable updates and sufficient exploration to balance reward maximization with constraint satisfaction. In nonstationary markets, dual variables can oscillate or diverge, leading to either persistent constraint violations or overly conservative policies that suppress returns. Moreover, the exploration mechanisms in many deep RL algorithms were designed for stationary environments, and they can become ineffective in financial settings where the reward landscape changes rapidly. These challenges highlight a gap between the theoretical elegance of CMDPs and their practical deployment in noisy, dynamic markets.
+
+Another challenge is evaluation. RL policies are typically trained on historical data or in simulators, but off-policy evaluation in finance is notoriously difficult because counterfactual price paths are unobserved. Backtests can overstate performance when policies adapt to idiosyncratic events, and they provide limited guidance about how strategies will behave under new policy regimes. Without stable simulators, many studies rely on historical replay, which violates the interaction assumptions of RL and can create a false sense of robustness (Sutton \& Barto, 2018).
+
+The application of reinforcement learning to financial trading therefore faces distinct market difficulties. Unlike stable benchmark tasks used to evaluate trading algorithms, market prices are inherently dynamic, returns are characterized by fat tails and data is overwhelmingly noisy. Additionally, trading agents must operate under strict operational constraints, including transaction costs, leverage limits, and draw-down restrictions, conditions that typical RL optimization goals are unable to account for. These characteristics severely limit the direct applicability of standard deep reinforcement learning algorithms that have demonstrated success in stationary or simulated domains.
+
+Proximal Policy Optimization (PPO), as a leading policy-gradient algorithm, has become prevalent for tasks that require continuous control. This preference is largely due to its empirical robustness and straightforward implementation (Schulman et al., 2017). PPO has consequently been adopted in numerous algorithmic trading research. However, in real world trading application, PPO-based agents frequently exhibit problematic action patterns such as excessive trading, unstable leverage allocation, and rapid collapse to near-deterministic policies. The introduction of external trading constraints intensifies these flaws, resulting in a fragile interplay between PPO's mechanisms such as probability clipping and entropy regularization, and the newly added penalty terms.
+
+A principled approach to handling constraints in reinforcement learning is provided by the framework of Constrained Markov Decision Processes, expressed through Lagrangian relaxation (Altman, 1999). While Lagrangian algorithms offer theoretical guarantees under certain assumptions, their application to deep RL in dynamic markets remains problematic. In particular, naive Lagrangian formulations combined with PPO tend to suffer from unstable dual variable dynamics and poor exploration-exploitation balance, leading to either persistent constraint violations or overly conservative policies (Achiam et al., 2017; Tessler et al., 2019). To counter these challenges, we propose a novel Entropy-Regulated Lagrangian (ERL) framework for constrained RL in foreign currency pair trading. The core innovation involves actively managing policy entropy during learning instead of depending on static bonuses or the incidental exploration from PPO's clipping mechanism. By anchoring policy entropy to a target trajectory, ERL prevents premature convergence to delicate and often risky strategies while preserving the benefits of Lagrangian constraint handling.
+
+This work introduces three core contributions. First, we formally derive an ERL optimization objective for CMDPs, ensuring theoretical consistency with the established framework. Second, we show that the ERL-based model outperforms standard PPO in constrained trading settings by stabilizing training and significantly reducing constraint violations. Third, we conduct a comprehensive evaluation using a realistic FX trading simulator, benchmarking ERL against vanilla PPO and leading baselines with performance metrics tailored to asset management to evaluate the effectiveness of the model in similar real-world scenarios. These contributions respond directly to the empirical gaps in prior statistical and ML approaches by optimizing decision making under realistic constraints, rather than optimizing isolated prediction tasks.
+
+The rest of this paper is organized as follows. Section~\ref{sec:related_work} reviews relevant literature in financial reinforcement learning and constrained optimization. Section~\ref{sec:methodology} details our ERL framework and its implementation within the PPO algorithm. Section~\ref{sec:experiments} outlines the experimental design, including the data and performance metrics. Section~\ref{sec:results} reports and analyzes the empirical results. Section~\ref{sec:discussion} discusses the implications and limitations of the proposed approach. Finally, Section~\ref{sec:conclusion} concludes with a summary and potential avenues of improvement for future works.
+
+\section*{References}
+
+Achiam, J., Held, D., Tamar, A., \& Abbeel, P. (2017). Constrained policy optimization. In \textit{Proceedings of the 34th International Conference on Machine Learning}.
+
+Almgren, R., \& Chriss, N. (2001). Optimal execution of portfolio transactions. \textit{Journal of Risk}, 3(2), 5-39.
+
+Altman, E. (1999). \textit{Constrained Markov Decision Processes}. Chapman and Hall/CRC.
+
+Bank for International Settlements. (2022). \textit{Triennial Central Bank Survey: Global foreign exchange market turnover in 2022}. BIS.
+
+Bishop, C. M. (2006). \textit{Pattern Recognition and Machine Learning}. Springer.
+
+Bollerslev, T. (1986). Generalized autoregressive conditional heteroskedasticity. \textit{Journal of Econometrics}, 31(3), 307-327.
+
+Cont, R. (2001). Empirical properties of asset returns: Stylized facts and statistical issues. \textit{Quantitative Finance}, 1(2), 223-236.
+
+Dacorogna, M. M., Gencay, R., Muller, U. A., Olsen, R. B., \& Pictet, O. V. (2001). \textit{An Introduction to High-Frequency Finance}. Academic Press.
+
+Deng, Y., Bao, F., Kong, Y., Ren, Z., \& Dai, Q. (2016). Deep direct reinforcement learning for financial signal representation and trading. \textit{IEEE Transactions on Neural Networks and Learning Systems}, 28(3), 653-664.
+
+Diebold, F. X., \& Mariano, R. S. (1995). Comparing predictive accuracy. \textit{Journal of Business \& Economic Statistics}, 13(3), 253-263.
+
+Engel, C., \& Hamilton, J. D. (1990). Long swings in the dollar: Are they in the data and do markets know it? \textit{American Economic Review}, 80(4), 689-713.
+
+Engle, R. F. (1982). Autoregressive conditional heteroskedasticity with estimates of the variance of United Kingdom inflation. \textit{Econometrica}, 50(4), 987-1007.
+
+Evans, M. D. D., \& Lyons, R. K. (2002). Order flow and exchange rate dynamics. \textit{Journal of Political Economy}, 110(1), 170-180.
+
+Fama, E. F. (1970). Efficient capital markets: A review of theory and empirical work. \textit{Journal of Finance}, 25(2), 383-417.
+
+Fischer, T., \& Krauss, C. (2018). Deep learning with long short-term memory networks for financial market predictions. \textit{European Journal of Operational Research}, 270(2), 654-669.
+
+Garcia, J., \& Fernandez, F. (2015). A comprehensive survey on safe reinforcement learning. \textit{Journal of Machine Learning Research}, 16, 1437-1480.
+
+Goodfellow, I., Bengio, Y., \& Courville, A. (2016). \textit{Deep Learning}. MIT Press.
+
+Gu, S., Kelly, B., \& Xiu, D. (2020). Empirical asset pricing via machine learning. \textit{Review of Financial Studies}, 33(5), 2223-2273.
+
+Hamilton, J. D. (1989). A new approach to the economic analysis of nonstationary time series and the business cycle. \textit{Econometrica}, 57(2), 357-384.
+
+Hastie, T., Tibshirani, R., \& Friedman, J. (2009). \textit{The Elements of Statistical Learning} (2nd ed.). Springer.
+
+Jiang, Z., Xu, D., \& Liang, J. (2017). A deep reinforcement learning framework for the financial portfolio management problem. \textit{arXiv preprint arXiv:1706.10059}.
+
+Johansen, S. (1991). Estimation and hypothesis testing of cointegration vectors in Gaussian vector autoregressive models. \textit{Econometrica}, 59(6), 1551-1580.
+
+LeBaron, B. (1999). Technical trading rule profitability and foreign exchange intervention. \textit{Journal of International Economics}, 49(1), 125-143.
+
+Lillicrap, T. P., Hunt, J. J., Pritzel, A., Heess, N., Erez, T., Tassa, Y., Silver, D., \& Wierstra, D. (2015). Continuous control with deep reinforcement learning. \textit{arXiv preprint arXiv:1509.02971}.
+
+Lo, A. W., \& MacKinlay, A. C. (1988). Stock market prices do not follow random walks: Evidence from a simple specification test. \textit{Review of Financial Studies}, 1(1), 41-66.
+
+Malkiel, B. G. (1973). \textit{A Random Walk Down Wall Street}. W. W. Norton.
+
+Meese, R. A., \& Rogoff, K. (1983). Empirical exchange rate models of the 1970s: Do they fit out of sample? \textit{Journal of International Economics}, 14(1-2), 3-24.
+
+Mnih, V., Kavukcuoglu, K., Silver, D., Rusu, A. A., Veness, J., Bellemare, M. G., Graves, A., Riedmiller, M., Fidjeland, A. K., Ostrovski, G., Petersen, S., Beattie, C., Sadik, A., Antonoglou, I., King, H., Kumaran, D., Wierstra, D., Legg, S., \& Hassabis, D. (2015). Human-level control through deep reinforcement learning. \textit{Nature}, 518, 529-533.
+
+Moody, J., \& Saffell, M. (2001). Learning to trade via direct reinforcement. \textit{IEEE Transactions on Neural Networks}, 12(4), 875-889.
+
+Neely, C. J., Weller, P. A., \& Dittmar, R. (1997). Is technical analysis in the foreign exchange market profitable? A genetic programming approach. \textit{Journal of Financial and Quantitative Analysis}, 32(4), 405-426.
+
+Park, C.-H., \& Irwin, S. H. (2007). What do we know about the profitability of technical analysis? \textit{Journal of Economic Surveys}, 21(4), 786-826.
+
+Schulman, J., Levine, S., Moritz, P., Jordan, M. I., \& Abbeel, P. (2015). Trust region policy optimization. In \textit{Proceedings of the 32nd International Conference on Machine Learning}.
+
+Schulman, J., Wolski, F., Dhariwal, P., Radford, A., \& Klimov, O. (2017). Proximal policy optimization algorithms. \textit{arXiv preprint arXiv:1707.06347}.
+
+Sirignano, J., \& Cont, R. (2019). Universal features of price formation in financial markets: Perspectives from deep learning. \textit{Quantitative Finance}, 19(9), 1449-1459.
+
+Sullivan, R., Timmermann, A., \& White, H. (1999). Data-snooping, technical trading rule performance, and the bootstrap. \textit{Journal of Finance}, 54(5), 1647-1691.
+
+Sutton, R. S., \& Barto, A. G. (2018). \textit{Reinforcement Learning: An Introduction} (2nd ed.). MIT Press.
+
+Taylor, S. J. (2005). \textit{Asset Price Dynamics, Volatility, and Prediction}. Princeton University Press.
+
+Tessler, C., Mankowitz, D. J., \& Mannor, S. (2019). Reward constrained policy optimization. In \textit{Proceedings of the International Conference on Learning Representations}.
+
+Vapnik, V. N. (1995). \textit{The Nature of Statistical Learning Theory}. Springer.
+
+White, H. (2000). A reality check for data snooping. \textit{Econometrica}, 68(5), 1097-1126.
+
+\end{document}
