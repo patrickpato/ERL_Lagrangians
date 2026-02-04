@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://cleardroptech.com/sitemap.xml
